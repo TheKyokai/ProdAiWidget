@@ -19,7 +19,7 @@ const styles = `
         bottom: 3vh;
         right: 1.5vw;
         width: 30vw;
-        height: min(40vw,85vh);
+        height: min(60vw,95vh);
         transition: ease-in-out 0.1s;
         font-size: min(1.75vw,5vh);
     }
@@ -136,30 +136,32 @@ const styles = `
     .headerGreeting {
         display: flex;
         justify-content: left;
-        align-items: center;
+        align-items: flex-end;
+        flex-direction: row;
         width: 100%;
         height: 40%;
         font-size: 0.8em;
         font-weight: 700;
         box-sizing: border-box;
+        background: transparent;
     }
     
     .waveEmoji {
-        margin-left: 0.2em; /* Optional: adjust spacing between text and emoji */
-        display: inline-block; /* Ensure emoji behaves as an inline element */
-        transform: translateY(max(-2.5vh, -1.5vw)); /* Adjust vertical position if necessary */
         font-size: 1.5em;
+        text-shadow: none;
+        background: transparent;
+        border: none;
     }
 
     .introductionParagraph {
         display: flex;
         justify-content: center;
-        align-items: center;
-        font-size: 0.4em;
+        align-items: flex-start;
+        font-size: 0.45em;
         width: 100%;
         height: 60%;
         margin: 0;
-        font-weight: 300;
+        font-weight: 360;
         text-align: justify;
     }
 
