@@ -19,9 +19,9 @@ const styles = `
         bottom: 3vh;
         right: 1.5vw;
         width: 30vw;
-        height: 85vh;
+        height: min(40vw,85vh);
         transition: ease-in-out 0.1s;
-        font-size: 1.75vw;
+        font-size: min(1.75vw,5vh);
     }
 
     .chatBubble {
@@ -53,6 +53,7 @@ const styles = `
         left: 50%;
         transform: translate(-50%, -50%);
         width: 42.5%;
+        cursor: pointer;
     }
 
     .chatWrapper {
@@ -96,10 +97,16 @@ const styles = `
     .lenaImageDiv {
         position: relative;
         height: 100%;
+        width: 30%;
     }
 
     .lenaChatImage {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
         max-height: 100%;
+        max-width: 100%;
         padding-top: 2%;
         padding-left: 2%;
         box-sizing: border-box;
@@ -121,36 +128,27 @@ const styles = `
         display: flex;
         flex-direction: column;
         height: 100%;
-        width: 45%;
+        width: 50%;
         color: white;
         font-family: "Roboto", sans-serif;
     }
 
-    .headerDiv {
+    .headerGreeting {
         display: flex;
+        justify-content: left;
         align-items: center;
-        flex-direction: row;
-        padding-top: 2%;
-        box-sizing: border-box;
         width: 100%;
         height: 40%;
-    }
-
-    .headerGreeting {
-        width: 70%;
-        height: 100%;
         font-size: 0.8em;
         font-weight: 700;
-        padding-top: 10%;
-        margin: 0;
         box-sizing: border-box;
     }
-
+    
     .waveEmoji {
-        height: 100%;
-        padding: 1%;
-        box-sizing: border-box;
-
+        margin-left: 0.2em; /* Optional: adjust spacing between text and emoji */
+        display: inline-block; /* Ensure emoji behaves as an inline element */
+        transform: translateY(max(-2.5vh, -1.5vw)); /* Adjust vertical position if necessary */
+        font-size: 1.5em;
     }
 
     .introductionParagraph {
@@ -171,6 +169,7 @@ const styles = `
         display: flex;
         justify-content: center;
         align-items: center;
+        cursor: pointer;
     }
 
     .arrowDown {
@@ -302,6 +301,7 @@ const styles = `
         justify-content: center;
         align-items: center;
         border: none;
+        cursor: pointer;
     }
 
     .shoppingCartImage {
@@ -434,22 +434,19 @@ const html = `
                 <div class="botInfo">
 
                     <div class="lenaImageDiv">
-                        <img src="https://i.postimg.cc/21mxkjtd/Lena-Rectangle.png" class="lenaChatImage">
+                        <img src="https://i.postimg.cc/ZvpttP7x/LenaRectangle.png" class="lenaChatImage">
                         <div class="onlineStatus"></div>
                     </div>
 
                     <div class="botHeaderContainer">
-                        <div class="headerDiv">
-                            <h1 class="headerGreeting">Dobar Dan!</h1>
-                            <img src="https://i.postimg.cc/K46NWDrH/Wave-Emoji.png" class="waveEmoji">
-                        </div>
+                        <div class="headerGreeting">Dobar Dan! <div class="waveEmoji">&#128075;</div></div>
                         <p class="introductionParagraph">
                             Ja sam Lena. AI prodajni asistnet. Mogu da odgovorim na sva Vaša pitanja vezana za naše proizvode!
                         </p>
                     </div>
 
                     <div class="arrowContainer" id="arrowContainer">
-                        <img src="https://i.postimg.cc/34PgP3pv/Arrow-Down.png" class="arrowDown">
+                        <img src="https://i.postimg.cc/0zfvyf8t/Arrow-Down.png" class="arrowDown">
                     </div>
                 </div>
 
@@ -472,8 +469,8 @@ const html = `
                         </div>
 
                         <button class="purchaseButton" onclick="addToCart(event)">
-                            <img src="https://i.postimg.cc/7bG9XW7z/Shopping-Cart.png" class="shoppingCartImage">
-                            <img src="https://i.postimg.cc/dLGBcZ5t/Confirmed-Check.png" class="confirmImage">
+                            <img src="https://i.postimg.cc/jwG0F3Xj/Shopping-Cart.png" class="shoppingCartImage">
+                            <img src="https://i.postimg.cc/KK82kMjm/Confirmed-Check.png" class="confirmImage">
                         </button>
 
                     </div>
@@ -486,11 +483,11 @@ const html = `
                     <textarea type="text" class="inputArea" placeholder="Upišite poruku..." id="userInput"></textarea>
                     <div class="manufacturer">
                         <div class="providedBy">Omogućeno sa</div>
-                        <img src="https://i.postimg.cc/Y9NCLrsG/Prod-Ai-Logo.png" class="prodAiLogo">
+                        <img src="https://i.postimg.cc/8FXVhzfM/Prod-Ai-Logo.png" class="prodAiLogo">
                     </div>
 
                     <button class="sendButton" id="sendButton">
-                        <img src="https://i.postimg.cc/QKTqtFsm/SendImg.png" class="sendImg">
+                        <img src="https://i.postimg.cc/N9yvbvRV/SendImg.png" class="sendImg">
                     </button>
                 </div>
             </div>
@@ -658,7 +655,7 @@ async function sendMessageAndUpdateChat(){
 
 sendButton.addEventListener('click',  (e) => {
     if (userInput.value !== ''){
-        // sendMessageAndUpdateChat();
+        sendMessageAndUpdateChat();
     }
 })
 
@@ -666,7 +663,7 @@ userInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
         e.preventDefault();
         if (userInput.value !== ''){
-            // sendMessageAndUpdateChat();
+            sendMessageAndUpdateChat();
         }
     }
 })
@@ -681,6 +678,8 @@ function addToCart(event){
     check.style.display = 'block';
     addProduct('https://gigatron.rs/side-by-side-frizideri/samsung-rf48a401em9eo-side-by-side-frizider-585241');
 }
+
+
 
 async function addProduct(url){
     const product = document.createElement('div');
@@ -699,6 +698,7 @@ async function addProduct(url){
     chatArea.appendChild(product);
     scrollToBottom()
 }
+
 
 async function extractMetadata(url) {
     try {
