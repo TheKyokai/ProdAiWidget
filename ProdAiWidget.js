@@ -1,3 +1,5 @@
+// CSS ca widget
+// ContainerFull i Bubble su velicine div-aa za dva stanja chat-a
 const styles = `
     .chatContainerBubble {
         display: flex;
@@ -421,6 +423,7 @@ const styles = `
 `;
 
 
+// Inner html container-a
 const html = `
 
         <div class="chatBubble" id="chatBubble">
@@ -500,21 +503,21 @@ const html = `
 
 
 
-// Widget component
+// Widget renderuje usluzna klasa
 class Widget {
     static render() {
-        // Append the styles to the head
+        // Dodavanje css-a u head
         const styleElement = document.createElement('style');
         styleElement.textContent = styles;
         document.head.appendChild(styleElement);
 
-        // Create a container and append the HTML
+        // Pravi se bubble container u koji se dodaje html
         const chatContainer = document.createElement('div');
         chatContainer.id = 'chatContainer';
         chatContainer.className = 'chatContainerBubble';
         chatContainer.innerHTML = html;
 
-        // Append the container to the body
+        // Sve se dodaje u body
         document.body.appendChild(chatContainer);
     }
 }
@@ -530,6 +533,8 @@ const lenaCircle = document.getElementById("lenaCircle");
 const arrow = document.getElementById("arrowContainer");
 const chatContainer = document.getElementById("chatContainer");
 
+
+// Prikaz i sakrivanje chat-a
 chatCircle.addEventListener("click", (e) => {
     showChat();
 })
@@ -554,8 +559,8 @@ function hideChat() {
     chatBubble.style.display = "block";
 }
 
-
-
+// Funkcionalnost chat-a
+// Skoro isti kod kao kod demo-a za computerland, par linija se razolikuje (privremene rute za testiranje)
 const userInput = document.getElementById('userInput');
 const sendButton = document.getElementById('sendButton');
 
@@ -670,7 +675,7 @@ userInput.addEventListener('keypress', (e) => {
     }
 })
 
-
+// Za sad samo promena slike i dodavanje jos jednog proizvoda
 function addToCart(event){
     const source = event.currentTarget;
     const cart = source.querySelector('.shoppingCartImage');
@@ -682,7 +687,7 @@ function addToCart(event){
 }
 
 
-
+// Dodaje proizvod sa linka u chat
 async function addProduct(url){
     const product = document.createElement('div');
 
@@ -691,9 +696,11 @@ async function addProduct(url){
 
     product.className = 'productDiv';
 
+    // Ako postoji cena prikazuje cenu i ime
     if (metadata.priceAmount) {
         product.innerHTML = `<div class="productImageContainer"> <img src="${metadata.image}" class="productImage"> </div> <div class="productInfoDiv"> <h1 class="productPrice">${metadata.priceAmount} ${metadata.priceCurrency}</h1> <h2 class="productName">${metadata.title}</h2> </div> <button class="purchaseButton" onclick="addToCart(event)"> <img src="resources/ShoppingCart.png" class="shoppingCartImage"> <img src="resources/ConfirmedCheck.png" class="confirmImage"> </button>`
     } else {
+        // Ako ne postoji cena prikazuju se ime i recenica opisa
         product.innerHTML = `<div class="productImageContainer"> <img src="${metadata.image}" class="productImage"> </div> <div class="productInfoDiv"> <h1 class="productPrice">${metadata.title}</h1> <h2 class="productName">${metadata.description}</h2> </div> <button class="purchaseButton" onclick="addToCart(event)"> <img src="resources/ShoppingCart.png" class="shoppingCartImage"> <img src="resources/ConfirmedCheck.png" class="confirmImage"> </button>`
     }
 
@@ -701,7 +708,7 @@ async function addProduct(url){
     scrollToBottom()
 }
 
-
+// Trazi cenu ime i opis proizvoda sa linka
 async function extractMetadata(url) {
     try {
         // Fetch the page content
