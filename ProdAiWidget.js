@@ -790,6 +790,7 @@ lenaCircle.addEventListener("load", async (e) => {
     const urlParams = new URLSearchParams(queryString);
     const tid = urlParams.get('tid');
     if(tid){
+        thread_id = tid; //treba nastaviti stari thread
         showChat()
         const data = {thread_id: tid};
         const options = {
@@ -805,7 +806,6 @@ lenaCircle.addEventListener("load", async (e) => {
         const regexp = /"(https?:\/\/[^\s"]+)"/g;
 
         for (const msg of content) {
-        //content.forEach(async msg => {
             if(msg.role == "user"){
                 const messageDiv = document.createElement('div');
 
