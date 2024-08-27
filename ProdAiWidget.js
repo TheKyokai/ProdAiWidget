@@ -552,7 +552,7 @@ const styles = `
             font-size: min(4vw, 5vh);
             border-radius: 0; /* Maintain rounded edges */
             transition: ease-in-out 0.1s;
-            z-index: 10000000;
+            z-index: 1000000000;
             overflow: hidden;
         }
 
