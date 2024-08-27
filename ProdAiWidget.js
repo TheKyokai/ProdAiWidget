@@ -1028,16 +1028,16 @@ async function addToCart(event) {
 
     // Get the product URL from the product box
     const productUrl = productBox.querySelector('.productImageContainer a').href;
+
+    //diplay checkmark.
+    const source = event.currentTarget;
+    const cart = source.querySelector('.shoppingCartImage');
+    const check = source.querySelector('.confirmImage');
+    cart.style.display = 'none';
+    check.style.display = 'block';
+
     
     try {
-        // Fetch the product page content
-        const response = await fetch(productUrl);
-        const text = await response.text();
-
-        // Parse the HTML content to extract product data
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(text, 'text/html');
-
         const productId = productUrl.split("/").slice(-2,-1)[0];
         const productPrice = productBox.querySelector('.productPrice').textContent;
         const productName = productBox.querySelector('.productName').textContent;
@@ -1171,16 +1171,3 @@ async function extractMetadata(url) {
 
 const inputDiv = document.querySelector('.inputDiv');
 const chatWrapper = document.querySelector('.chatWrapper');
-
-// window.addEventListener('resize', () => {
-//     const messageArea = document.getElementById('chat');
-//     const inputDiv = document.getElementById('inputDiv');
-//     console.log("Resize");
-//     if (window.innerHeight < screen.height) {
-//         messageArea.style.paddingBottom = '40vh';
-//         inputDiv.style.marginBottom = '40vh';
-//     } else {
-//         messageArea.style.paddingBottom = '0';
-//         inputDiv.style.marginBottom = '0';
-//     }
-// });
