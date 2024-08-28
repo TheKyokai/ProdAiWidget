@@ -927,6 +927,7 @@ lenaCircle.addEventListener("load", async (e) => {
         const content = (await res.json()).messages.reverse();
         const regexp = /"(https?:\/\/[^\s"]+)"/g;
 
+
         for (const msg of content) {
             //content.forEach(async msg => {
             if(msg.role == "user"){
@@ -942,8 +943,8 @@ lenaCircle.addEventListener("load", async (e) => {
 
                 responseDiv.className = "responseDiv";
 
-
-                responseDiv.innerHTML = msg.content.replaceAll("<br>", "").replace(regexp, '');
+                const prodLinkRemovalPattern = /"https?:\/\/bikini\.co\.rs\/product\/[^"]*"/g;
+                responseDiv.innerHTML = msg.content.replaceAll("<br>", "").replace(prodLinkRemovalPattern, '');
                 waiting = false;
                 removeEmptyElements(responseDiv)
                 chatArea.append(responseDiv);
@@ -980,7 +981,8 @@ lenaCircle.addEventListener("load", async (e) => {
         const ress = await fetch('https://europe-central2-dumbbeapp.cloudfunctions.net/bikini_prodai/recommendMoreProducts', options1);
         const recmore = (await ress.json()).response;
         stopLoading(responseMoreDiv)
-        responseMoreDiv.innerHTML = recmore.replace(regexp, '');
+        const prodLinkRemovalPattern = /"https?:\/\/bikini\.co\.rs\/product\/[^"]*"/g;
+        responseMoreDiv.innerHTML = recmore.replace(prodLinkRemovalPattern, '');
         removeEmptyElements(responseMoreDiv)
 
         const matches = recmore.matchAll(regexp);
@@ -1114,8 +1116,9 @@ async function sendMessageAndUpdateChat(){
 
     stopLoading();
 
-    const regexp = /"(https?:\/\/[^\s"]+)"/g;;
-    responseDiv.innerHTML = res.text.replace(regexp, '');
+    const regexp = /"(https?:\/\/[^\s"]+)"/g;
+    const prodLinkRemovalPattern = /"https?:\/\/bikini\.co\.rs\/product\/[^"]*"/g;
+    responseDiv.innerHTML = res.text.replace(prodLinkRemovalPattern, '');
     removeEmptyElements(responseDiv)
     waiting = false;
 
@@ -1126,7 +1129,6 @@ async function sendMessageAndUpdateChat(){
     }
 
     scrollToBottom();
-
 
 }
 
@@ -1246,9 +1248,6 @@ async function extractMetadata(url) {
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
-
-        //const text = await response.text();
-        //let response = await fetch(fetchUrl);
 
 
 
