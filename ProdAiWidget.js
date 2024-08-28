@@ -931,7 +931,7 @@ lenaCircle.addEventListener("load", async (e) => {
                 const matches = msg.content.matchAll(regexp);
                 for (const match of matches) {
                     console.log(`Found ${match[0]} start=${match.index} end=${match.index + match[0].length}.`);
-                    if(!match[0].includes("/images/")) await addProduct(match[0].slice(1,-1))
+                    if(match[0].includes("/product/")) await addProduct(match[0].slice(1,-1))
                     scrollToBottom();
                 }
             
@@ -966,7 +966,7 @@ lenaCircle.addEventListener("load", async (e) => {
         const matches = recmore.matchAll(regexp);
         for (const match of matches) {
             console.log(`Found ${match[0]} start=${match.index} end=${match.index + match[0].length}.`);
-            if(!match[0].includes("/images/")) await addProduct(match[0].slice(1,-1))
+            if(match[0].includes("/product/")) await addProduct(match[0].slice(1,-1))
             scrollToBottom();
         }
         scrollToBottom();
@@ -1090,7 +1090,7 @@ async function sendMessageAndUpdateChat(){
 
     stopLoading();
     
-    const regexp = /"(https?:\/\/[^\s"]+)"/g;;
+    const regexp = /"(https?:\/\/[^\s"]+)"/g;
     responseDiv.innerHTML = res.text.replace(regexp, '');
     removeEmptyElements(responseDiv)
     waiting = false;
@@ -1098,7 +1098,7 @@ async function sendMessageAndUpdateChat(){
     const matches = res.text.matchAll(regexp);
     for (const match of matches) {
         console.log(`Found ${match[0]} start=${match.index} end=${match.index + match[0].length}.`);
-        if(!match[0].includes("/images/")) addProduct(match[0].slice(1,-1))
+        if(match[0].includes("/product/")) addProduct(match[0].slice(1,-1))
     }
 
     scrollToBottom();
