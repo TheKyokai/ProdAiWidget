@@ -453,6 +453,8 @@ const styles = `
 
     @media (orientation: portrait)  {
     
+        
+    
         .productImage {
             border-radius: 3vw;
         }
@@ -499,7 +501,7 @@ const styles = `
 
         .purchaseButton {
             width: 25%;
-            height: 9vw;
+            // height: 9vw;
             background-color: #545454;
             border-radius: 3vw;
             display: flex;
@@ -508,9 +510,15 @@ const styles = `
             border: none;
             cursor: pointer;
         }
+        
+        
 
         .chat, .botHeaderContainer, .headerGreeting, .introductionParagraph, .messageArea, .inputArea {
             font-size: 0.94em; /* Adjust this value to increase text size */
+        }
+        
+        .botInfo {
+                font-size: 1.5em;
         }
         
         @media (max-height: 675px) {
@@ -518,6 +526,18 @@ const styles = `
                 font-size: 0.82em; /* Adjust this value to increase text size */
             }
             
+            .botInfo {
+                font-size: 1.2em;
+            }
+            
+        }
+        
+        @media (max-width: 470px) {
+            @media (max-height: 400px){ 
+                .botInfo {
+                    font-size: 1em;
+                }
+            }
         }
 
         .messageArea {
@@ -552,7 +572,7 @@ const styles = `
             font-size: min(4vw, 5vh);
             border-radius: 0; /* Maintain rounded edges */
             transition: ease-in-out 0.1s;
-            z-index: 1000000000;
+            z-index: 10000000;
             overflow: hidden;
         }
 
@@ -654,8 +674,90 @@ const styles = `
 
     }
 
-    .keyboard {
-        padding-bottom: 40vh; /* add padding for keyboard */
+    @media (orientation: landscape) {
+        @media (max-height: 500px) {
+            
+            .chatBackgroundGradient {
+                display: none;
+            }
+            
+            .chatContainerFull {
+                width: 100%;
+                height: 100%;
+                bottom: 0;
+                right: 0;
+                font-size: 2em;
+            }
+            
+            .chatWrapper {
+                width: 100%;
+                height: 100%;
+            }
+            
+            .chat {
+                width: 100%;
+                height: 100%;
+                border-radius: 0;
+            }
+            
+            .onlineStatus {
+                width: 1.5%;
+                height: 1.5%;
+                left: 39%;
+                bottom: 0;
+            }
+            
+            .responseDiv {
+                margin-top: 2%;
+            }
+            
+            .messageDiv {
+                margin-top: 2%;
+            }
+            
+            .productInfoDiv {
+                font-size: 1.35em;
+            }
+            
+            .purchaseButton {
+                height: 10%;
+            }
+            
+            .messageArea {
+                margin-bottom: 22.5%;
+                min-height: 60%;
+                padding-top: 1.25%;
+                box-sizing: border-box;
+            }
+            
+            .botInfo {
+                height: 17.5%;
+            }
+            
+            .inputDiv {
+                height: 22.5%;
+            }
+            
+            .inputArea {
+                padding-top: 1%;
+            }
+            
+            .prodAiLogoWidget {
+                width: 10%;
+                padding-right: 7.5%;
+            }
+            
+            .sendButton {
+                width: 4.25dvw;
+                height: 4.25dvw;
+                right: 5dvw;
+                bottom: 10.75dvh;
+            }
+            
+            .waveEmoji {
+                font-size: 1em;
+            }
+        }
     }
 
 `;
@@ -790,7 +892,6 @@ lenaCircle.addEventListener("load", async (e) => {
     const urlParams = new URLSearchParams(queryString);
     const tid = urlParams.get('tid');
     if(tid){
-        thread_id = tid; //treba nastaviti stari thread
         showChat()
         const data = {thread_id: tid};
         const options = {
@@ -806,6 +907,7 @@ lenaCircle.addEventListener("load", async (e) => {
         const regexp = /"(https?:\/\/[^\s"]+)"/g;
 
         for (const msg of content) {
+        //content.forEach(async msg => {
             if(msg.role == "user"){
                 const messageDiv = document.createElement('div');
 
@@ -1028,16 +1130,16 @@ async function addToCart(event) {
 
     // Get the product URL from the product box
     const productUrl = productBox.querySelector('.productImageContainer a').href;
-
-    //diplay checkmark.
-    const source = event.currentTarget;
-    const cart = source.querySelector('.shoppingCartImage');
-    const check = source.querySelector('.confirmImage');
-    cart.style.display = 'none';
-    check.style.display = 'block';
-
     
     try {
+        // Fetch the product page content
+        const response = await fetch(productUrl);
+        const text = await response.text();
+
+        // Parse the HTML content to extract product data
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(text, 'text/html');
+
         const productId = productUrl.split("/").slice(-2,-1)[0];
         const productPrice = productBox.querySelector('.productPrice').textContent;
         const productName = productBox.querySelector('.productName').textContent;
@@ -1171,3 +1273,16 @@ async function extractMetadata(url) {
 
 const inputDiv = document.querySelector('.inputDiv');
 const chatWrapper = document.querySelector('.chatWrapper');
+
+// window.addEventListener('resize', () => {
+//     const messageArea = document.getElementById('chat');
+//     const inputDiv = document.getElementById('inputDiv');
+//     console.log("Resize");
+//     if (window.innerHeight < screen.height) {
+//         messageArea.style.paddingBottom = '40vh';
+//         inputDiv.style.marginBottom = '40vh';
+//     } else {
+//         messageArea.style.paddingBottom = '0';
+//         inputDiv.style.marginBottom = '0';
+//     }
+// });
