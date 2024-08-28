@@ -92,6 +92,7 @@ const styles = `
         flex-direction: column;
         background: linear-gradient(360deg, #272727 83.5%, #8D8D8D 100%);
         border-radius: 2vw;
+        box-sizing: border-box;
     }
 
     .botInfo {
@@ -575,6 +576,20 @@ const styles = `
             z-index: 10000000;
             overflow: hidden;
         }
+        
+        
+        @media (min-width: 500px) {
+            .chatContainerFull {
+                font-size: 0.5em;
+            }
+        }
+        
+        @media (min-width: 600px) {
+            .chatContainerFull {
+                font-size: 0.45em;
+            }
+        }
+    
 
         .chatWrapper {
             display: none;
@@ -676,6 +691,10 @@ const styles = `
 
     @media (orientation: landscape) {
         @media (max-height: 500px) {
+            
+            .headerGreeting {
+                padding-top: 5%;
+            }
             
             .productDiv {
                 width: 45%;
@@ -863,6 +882,7 @@ const chatCircle = document.getElementById("blackCircle");
 const lenaCircle = document.getElementById("lenaCircle");
 const arrow = document.getElementById("arrowContainer");
 const chatContainer = document.getElementById("chatContainer");
+let chatShown = false;
 
 chatCircle.addEventListener("click", (e) => {
     showChat();
@@ -875,7 +895,7 @@ lenaCircle.addEventListener("click", (e) => {
 function removeEmptyElements(element) {
     // Get all child elements
     const children = element.querySelectorAll('*');
-    
+
     children.forEach(child => {
         // Check if the element is empty or contains only whitespace
         if (!child.innerHTML.trim() && child.children.length === 0) {
@@ -908,7 +928,7 @@ lenaCircle.addEventListener("load", async (e) => {
         const regexp = /"(https?:\/\/[^\s"]+)"/g;
 
         for (const msg of content) {
-        //content.forEach(async msg => {
+            //content.forEach(async msg => {
             if(msg.role == "user"){
                 const messageDiv = document.createElement('div');
 
@@ -919,10 +939,10 @@ lenaCircle.addEventListener("load", async (e) => {
             }
             else{
                 const responseDiv = document.createElement('div');
-    
+
                 responseDiv.className = "responseDiv";
-                
-                
+
+
                 responseDiv.innerHTML = msg.content.replaceAll("<br>", "").replace(regexp, '');
                 waiting = false;
                 removeEmptyElements(responseDiv)
@@ -934,11 +954,11 @@ lenaCircle.addEventListener("load", async (e) => {
                     if(!match[0].includes("/images/")) await addProduct(match[0].slice(1,-1))
                     scrollToBottom();
                 }
-            
+
 
             }
             scrollToBottom();
-            
+
         }
 
 
@@ -953,7 +973,7 @@ lenaCircle.addEventListener("load", async (e) => {
         };
         const responseMoreDiv = document.createElement('div');
         responseMoreDiv.className = "responseDiv";
-        
+
         chatArea.append(responseMoreDiv);
         scrollToBottom();
         startLoading(responseMoreDiv)
@@ -984,6 +1004,8 @@ function showChat() {
     chatBubble.style.display = "none";
     chat.style.display = "flex";
     document.body.style.overflow = 'hidden';
+    chatShown = true;
+    updateViewportFit();
 }
 
 function hideChat() {
@@ -991,6 +1013,8 @@ function hideChat() {
     chatContainer.className = "chatContainerBubble";
     chatBubble.style.display = "block";
     document.body.style.overflow = 'auto';
+    chatShown = false;
+    updateViewportFit();
 }
 
 
@@ -1080,7 +1104,7 @@ async function sendMessageAndUpdateChat(){
 
     responseDiv.textContent = '.';
     responseDiv.className = "responseDiv";
-    
+
     chatArea.appendChild(responseDiv);
     scrollToBottom();
 
@@ -1089,7 +1113,7 @@ async function sendMessageAndUpdateChat(){
     const res = await sendPrompt();
 
     stopLoading();
-    
+
     const regexp = /"(https?:\/\/[^\s"]+)"/g;;
     responseDiv.innerHTML = res.text.replace(regexp, '');
     removeEmptyElements(responseDiv)
@@ -1131,7 +1155,7 @@ async function addToCart(event) {
 
     // Get the product URL from the product box
     const productUrl = productBox.querySelector('.productImageContainer a').href;
-    
+
     try {
         // Fetch the product page content
         const response = await fetch(productUrl);
@@ -1273,17 +1297,33 @@ async function extractMetadata(url) {
 }
 
 const inputDiv = document.querySelector('.inputDiv');
-const chatWrapper = document.querySelector('.chatWrapper');
+const chatPadder = document.querySelector('.chat');
 
-// window.addEventListener('resize', () => {
-//     const messageArea = document.getElementById('chat');
-//     const inputDiv = document.getElementById('inputDiv');
-//     console.log("Resize");
-//     if (window.innerHeight < screen.height) {
-//         messageArea.style.paddingBottom = '40vh';
-//         inputDiv.style.marginBottom = '40vh';
-//     } else {
-//         messageArea.style.paddingBottom = '0';
-//         inputDiv.style.marginBottom = '0';
-//     }
-// });
+
+function updateViewportFit() {
+    const metaViewport = document.querySelector('meta[name="viewport"]');
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    console.log("updating");
+    // Check if the phone is in landscape mode and if the dimensions meet your criteria
+    if (width > height && width <= 1000 && height <= 520 && chatShown) {
+        if (!metaViewport.content.includes('viewport-fit=cover')) {
+            chatPadder.style.paddingLeft = '5%';
+            chatPadder.style.paddingRight = '5%';
+            metaViewport.content += ', viewport-fit=cover';
+        }
+    } else {
+        if (metaViewport.content.includes('viewport-fit=cover') && !chatShown) {
+            chatPadder.style.paddingLeft = '0';
+            chatPadder.style.paddingRight = '0';
+            metaViewport.content = metaViewport.content.replace(', viewport-fit=cover', '');
+        }
+    }
+}
+
+
+
+
+window.addEventListener('resize', updateViewportFit);
+window.addEventListener('orientationchange', updateViewportFit);
