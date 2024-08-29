@@ -466,7 +466,7 @@ const styles = `
         }
     
         .prodAiLogoWidget {
-            width: 25%;
+            width: 17%;
             padding-right: 10%;
         }
         
