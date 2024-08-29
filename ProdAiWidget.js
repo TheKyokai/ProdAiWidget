@@ -256,8 +256,8 @@ const styles = `
         border-radius: 1vw;
         z-index: 1;
         
-        word-wrap: break-word; /* Ensures long words break */
-        overflow-wrap: break-word; /* The new standard for word-wrap */
+        word-wrap: break-word;
+        overflow-wrap: anywhere;
         
     }
 
