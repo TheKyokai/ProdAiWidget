@@ -1180,18 +1180,17 @@ async function addToCart(event) {
     // Get the product box containing this button
     const productBox = button.parentElement;
 
+    const cart = button.querySelector('.shoppingCartImage');
+    const check = button.querySelector('.confirmImage');
+
+    cart.style.display = 'none';
+    check.style.display = 'block';
+
+
     // Get the product URL from the product box
     const productUrl = productBox.querySelector('.productImageContainer a').href;
 
     try {
-        // Fetch the product page content
-        const response = await fetch(productUrl);
-        const text = await response.text();
-
-        // Parse the HTML content to extract product data
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(text, 'text/html');
-
         const productId = productUrl.split("/").slice(-2,-1)[0];
         const productPrice = productBox.querySelector('.productPrice').textContent;
         const productName = productBox.querySelector('.productName').textContent;
